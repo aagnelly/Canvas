@@ -1,10 +1,10 @@
-###################################################################################################
-#                                                                                                 #
-#	D/E report returns a csv document with 4 fields for students with a                       #
-#	current grade lower than 70%:                                                             #
-#	Student name, course name, current grade, URL to the student's grade page_count           #
-#	Before running the script, update line 16-20 with the values for your instance and search #
-###################################################################################################
+#####################################################################################################
+#                                                                                                   #
+#	D/E report returns a csv document with 4 fields for students with a                         #
+#	current grade lower than 70%:                                                               #
+#	Student name, course name, current grade, URL to the student's grade page_count             #
+#	Before running the script, update line 16-20 with the values for your instance/search terms #
+#####################################################################################################
 
 # import gems
 require 'typhoeus'
@@ -24,7 +24,7 @@ date = "#{time.month}.#{time.day}.#{time.year}"
 $output_csv = "DE_report.#{date}.csv"
 $api_endpoint_account_courses = "/api/v1/accounts/#{account}/courses?enrollment_term_id=#{enrollment_term_id}"  	#pull current term courses
 $api_endpoint_courses ='/api/v1/courses/'
-curr_courses = Array.new
+
 
 def get_DE(course_id, course_name)
 #reset counters and look for student enrollments with current_score < 70
@@ -62,7 +62,6 @@ def get_DE(course_id, course_name)
 			 student_data.each do |enrollments|
 				 grade = enrollments['grades'] #nested grades JSON in response
 				 user = enrollments['user']		#nested user JSON
-				 # stores current courses to curr_courses array if in current term (FY 2017-2018)
 				 if grade['current_score'].to_i < 70 && grade['current_score'] != nil
 					 student_count += 1
 					 CSV.open($output_csv, 'a') do |csv|
@@ -116,7 +115,6 @@ while more_data # while more_data is true keep looping through the data
 	 if response.code == 200
 		 course_data = JSON.parse(response.body)
 		 course_data.each do |courses|
-		 # stores current courses to curr_courses array if in current term (FY 2017-2018)
 			 count += 1
 			 get_DE(courses['id'],courses['name'])
 		 end
@@ -130,9 +128,4 @@ get_courses.run
 end
 
 puts "Report is complete. Filename: #{$output_csv}"
-
-
-
-
-
 
