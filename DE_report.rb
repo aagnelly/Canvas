@@ -1,10 +1,10 @@
-###############################################################################################
-#                                                                                             #
+###################################################################################################
+#                                                                                                 #
 #	D/E report returns a csv document with 4 fields for students with a                       #
 #	current grade lower than 70%:                                                             #
 #	Student name, course name, current grade, URL to the student's grade page_count           #
 #	Before running the script, update line 16-20 with the values for your instance and search #
-###############################################################################################
+###################################################################################################
 
 # import gems
 require 'typhoeus'
